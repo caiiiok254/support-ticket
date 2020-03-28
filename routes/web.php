@@ -27,10 +27,10 @@ Route::get('tickets/{ticket_id}', 'TicketsController@show');
 
 Route::post('comment', 'CommentsController@postComment');
 
+Route::post('close_ticket/{ticket_id}', 'TicketsController@close');
+
 Route::group(['prefix' => 'manager', 'middleware' => 'manager'], function (){
 
     Route::get('tickets', 'TicketsController@index');
-
-    Route::post('close_ticket/{ticket_id}', 'TicketsController@close');
 
 });

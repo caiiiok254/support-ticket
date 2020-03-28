@@ -22,6 +22,7 @@
                         <th>Title</th>
                         <th>Status</th>
                         <th>Last Updated</th>
+                        <th style="text-align:center" colspan="2">Actions</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -44,6 +45,16 @@
                         </td>
                         <td>
                             {{ $ticket->updated_at }}
+                        </td>
+                        <td>
+                            @if($ticket->status === 'Open')
+                                <a href="{{ url('tickets/' . $ticket->ticket_id) }}" class="btn btn-primary">Comment</a>
+
+                                <form action="{{ url('/close_ticket/' . $ticket->ticket_id) }}" method="POST">
+                                    {!! csrf_field() !!}
+                                    <button type="submit" class="btn btn-danger">Close</button>
+                                </form>
+                            @endif
                         </td>
                     </tr>
                     @endforeach
