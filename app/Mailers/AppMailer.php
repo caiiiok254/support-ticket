@@ -14,6 +14,7 @@ class AppMailer
     protected $subject;
     protected $view;
     protected $data = [];
+    protected $attachment;
 
     /**
      * AppMailer constructor.
@@ -33,6 +34,9 @@ class AppMailer
         $this->view = 'emails.ticket_info';
 
         $this->data = compact('user', 'ticket');
+
+        $this->attachment = $ticket->file;
+
 
         return $this->deliver();
     }
@@ -63,7 +67,9 @@ class AppMailer
     public function deliver()
     {
         $this->mailer->send($this->view, $this->data, function($message){
-
+            if($this->attachment !== null) {
+                $message->attach($this->attachment);
+            }
             $message->from($this->fromAddress, $this->fromName)
                 ->to($this->to)->subject($this->subject);
         });

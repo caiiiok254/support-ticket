@@ -25,6 +25,8 @@
                         <p>
                             @if ($ticket->status === 'Open')
                                 Status: <span class="label label-success">{{ $ticket->status }}</span>
+                            @elseif ($ticket->status === 'Processing')
+                                Status: <span class="label label-warning">{{ $ticket->status }}</span>
                             @else
                                 Status: <span class="label label-danger">{{ $ticket->status }}</span>
                             @endif
@@ -35,13 +37,29 @@
                 </div>
             </div>
 
+            <div>File: <a href="/download/{{$ticket->ticket_id}}" target="_blank">Attached file</a></div>
+<hr>
+            <div>
+                <form action="{{ url('tickets/' . $ticket->ticket_id . '/processing') }}" method="POST">
+                    {!! csrf_field() !!}
+                    <button type="submit" class="btn btn-warning">Process this ticket</button>
+                </form>
+                <br>
+            <form action="{{ url('close_ticket/' . $ticket->ticket_id) }}" method="POST">
+                {!! csrf_field() !!}
+                <button type="submit" class="btn btn-danger">Close</button>
+            </form>
+            </div>
             <hr>
 
             @include('tickets.comments')
 
             <hr>
-
+            @if ($ticket->status === 'Closed')
+                You can't reply in a closed ticket!
+            @else
             @include('tickets.reply')
+                @endif
 
         </div>
     </div>

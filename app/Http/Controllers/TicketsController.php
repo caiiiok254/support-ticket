@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Category;
 use App\Ticket;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Mailers\AppMailer;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
 class TicketsController extends Controller
 {
@@ -35,8 +38,11 @@ class TicketsController extends Controller
     public function create()
     {
         $categories = Category::all();
-
-        return view('tickets.create', compact('categories'));
+        $tickets = Ticket::where('user_id', Auth::user()->id)->max('created_at');
+        $date = Carbon::parse($tickets);
+        $now = Carbon::now();
+        $diff = $date->diffInHours($now);
+        return view('tickets.create', compact('categories', 'diff'));
     }
 
     /**
@@ -61,11 +67,15 @@ class TicketsController extends Controller
             'category_id' => $request->input('category'),
             'priority' => $request->input('priority'),
             'message' => $request->input('message'),
-            'status' => "Open"
+            'status' => "Open",
         ]);
 
         $ticket->save();
 
+        $fileName = $ticket['ticket_id'] . '.' . $request->file->extension();
+
+        $request->file->move(public_path('uploads'), $fileName);
+        $ticket['file'] = public_path('uploads') . '\\' . $fileName;
         $mailer->sendTicketInformation(Auth::user(), $ticket);
 
         return redirect()->back()->with("status", "A ticket with ID: #$ticket->ticket_id has been opened.");
@@ -89,6 +99,17 @@ class TicketsController extends Controller
         $ticket = Ticket::where('ticket_id', $ticket_id)->firstOrFail();
 
         return view('tickets.show', compact('ticket'));
+    }
+
+    public function processing($ticket_id)
+    {
+        $ticket = Ticket::where('ticket_id', $ticket_id)->firstOrFail();
+
+        $ticket->status = "Processing";
+
+        $ticket->save();
+
+        return redirect()->back()->with("status", "The ticket marked as Processing.");
     }
 
     public function close($ticket_id, AppMailer $mailer)

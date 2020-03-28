@@ -38,13 +38,15 @@
                                     <td>
                                         @if ($ticket->status === 'Open')
                                             <span class="label label-success">{{ $ticket->status }}</span>
-                                        @else
+                                        @elseif ($ticket->status === 'Processing')
+                                            <span class="label label-warning">{{ $ticket->status }}</span>
+                                            @else
                                             <span class="label label-danger">{{ $ticket->status }}</span>
                                         @endif
                                     </td>
                                     <td>{{ $ticket->updated_at }}</td>
                                     <td>
-                                        @if($ticket->status === 'Open')
+                                        @if($ticket->status !== 'Closed')
                                             <a href="{{ url('tickets/' . $ticket->ticket_id) }}" class="btn btn-primary">Comment</a>
 
                                             <form action="{{ url('/close_ticket/' . $ticket->ticket_id) }}" method="POST">

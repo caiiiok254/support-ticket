@@ -17,8 +17,8 @@
                             {{ session('status') }}
                         </div>
                     @endif
-
-                    <form class="form-horizontal" role="form" method="POST">
+@if($diff >= 24)
+                    <form class="form-horizontal" role="form" method="POST" enctype="multipart/form-data">
                         {!! csrf_field() !!}
 
                         <div class="form-group{{ $errors->has('title') ? ' has-error' : '' }}">
@@ -86,6 +86,19 @@
                                 @endif
                             </div>
                         </div>
+                        <div class="form-group{{ $errors->has('file') ? ' has-error' : '' }}">
+                            <label for="file" class="col-md-4 control-label">File upload</label>
+
+                            <div class="col-md-6">
+                                <input id="file" type="file" name="file" class="form-control">
+                            </div>
+
+                                @if ($errors->has('file'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('file') }}</strong>
+                                    </span>
+                                @endif
+                        </div>
 
                         <div class="form-group">
                             <div class="col-md-6 col-md-offset-4">
@@ -95,6 +108,9 @@
                             </div>
                         </div>
                     </form>
+    @else
+                    <div class="p-3 mb-2 bg-danger text-white"> You can't create new ticket in less than 24 hours after you created last one</div>
+    @endif
                 </div>
             </div>
         </div>
