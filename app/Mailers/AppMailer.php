@@ -17,7 +17,7 @@ class AppMailer
     protected $view;
     protected $data = [];
     protected $attachment;
-    protected $managerAddress = 'kiskamiska2000@gmail.com';
+    protected $managerAddress;
 
     /**
      * AppMailer constructor.
@@ -26,6 +26,7 @@ class AppMailer
     public function __construct(Mailer $mailer)
     {
         $this->mailer = $mailer;
+        $this->managerAddress = User::where('is_manager', 1)->first()->email;
     }
 
     public function sendTicketInformation($user, Ticket $ticket)
