@@ -42,7 +42,7 @@ class TicketsController extends Controller
         $date = Carbon::parse($tickets);
         $now = Carbon::now();
         $diff = $date->diffInHours($now);
-        return view('tickets.create', compact('categories', 'diff'));
+        return view('tickets.create', compact('categories', 'diff', 'tickets'));
     }
 
     /**

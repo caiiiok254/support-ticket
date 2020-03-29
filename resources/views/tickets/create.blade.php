@@ -18,7 +18,7 @@
                         </div>
                     @endif
 
-                        @if($diff >= 24 AND $diff != null)
+                        @if($diff >= 24 OR $tickets === null)
                     <form class="form-horizontal" role="form" method="POST" enctype="multipart/form-data">
                         {!! csrf_field() !!}
 
