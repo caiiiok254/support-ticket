@@ -4,8 +4,52 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "929c3f5d22bc9003f952690193812958",
+    "content-hash": "a514691e84591af22ba82cd5a3748096",
     "packages": [
+        {
+            "name": "dam1r89/passwordless-auth",
+            "version": "1.5.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/dam1r89/laravel-passwordless-login.git",
+                "reference": "a531e48fb4f691a7d4978318e36894a047f75d4e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/dam1r89/laravel-passwordless-login/zipball/a531e48fb4f691a7d4978318e36894a047f75d4e",
+                "reference": "a531e48fb4f691a7d4978318e36894a047f75d4e",
+                "shasum": ""
+            },
+            "require-dev": {
+                "orchestra/testbench": "~3.6",
+                "phpunit/phpunit": "~7.1"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "dam1r89\\PasswordlessAuth\\PasswordlessAuthServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "dam1r89\\PasswordlessAuth\\": [
+                        "src/PasswordlessAuth/",
+                        "tests/PasswordlessAuth"
+                    ]
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "Damir Miladinov",
+                    "email": "damir89@gmail.com"
+                }
+            ],
+            "description": "Authenticate users without password, only with email",
+            "time": "2018-04-09T19:44:11+00:00"
+        },
         {
             "name": "dnoegel/php-xdg-base-dir",
             "version": "v0.1.1",

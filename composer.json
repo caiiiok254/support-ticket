@@ -6,10 +6,11 @@
     "type": "project",
     "require": {
         "php": ">=7.0.0",
+        "dam1r89/passwordless-auth": "^1.5",
         "fideloper/proxy": "~3.3",
+        "kyslik/column-sortable": "5.5.*",
         "laravel/framework": "5.5.*",
-        "laravel/tinker": "~1.0",
-        "kyslik/column-sortable": "5.5.*"
+        "laravel/tinker": "~1.0"
     },
     "require-dev": {
         "filp/whoops": "~2.0",

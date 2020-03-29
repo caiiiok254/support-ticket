@@ -4,9 +4,12 @@ namespace App;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use dam1r89\PasswordlessAuth\Contracts\UsersProvider;
+use dam1r89\PasswordlessAuth\UsersRepository;
 
-class User extends Authenticatable
+class User extends Authenticatable implements UsersProvider
 {
+    use UsersRepository;
     use Notifiable;
 
     /**
@@ -15,7 +18,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'is_manager'
     ];
 
     /**

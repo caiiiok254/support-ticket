@@ -17,6 +17,7 @@
                             {{ session('status') }}
                         </div>
                     @endif
+
                         @if($diff >= 24)
                     <form class="form-horizontal" role="form" method="POST" enctype="multipart/form-data">
                         {!! csrf_field() !!}

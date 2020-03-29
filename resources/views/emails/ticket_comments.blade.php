@@ -17,7 +17,11 @@
 <p>Status: {{ $ticket->status }}</p>
 
 <p>
+    @if ($user->is_manager === 1)
     You can view the ticket at any time at {{ url('tickets/'. $ticket->ticket_id) }}
+        @else
+    Quick ticket link: {{$link}}
+        @endif
 </p>
 
 </body>

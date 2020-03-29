@@ -75,12 +75,14 @@ class TicketsController extends Controller
 
         $ticket->save();
 
-        $fileName = $ticket['ticket_id'] . '.' . $request->file->extension();
+        if ($request->file !== null) {
 
-        $request->file->move(public_path('uploads'), $fileName);
-        $ticket['file'] = public_path('uploads') . '\\' . $fileName;
+            $fileName = $ticket['ticket_id'] . '.' . $request->file->extension();
 
+            $request->file->move(public_path('uploads'), $fileName);
+            $ticket['file'] = public_path('uploads') . '\\' . $fileName;
 
+        }
         $mailer->sendTicketInformation(Auth::user(), $ticket);
 
         return redirect()->back()->with("status", "A ticket with ID: #$ticket->ticket_id has been opened.");

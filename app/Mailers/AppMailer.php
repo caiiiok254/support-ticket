@@ -3,6 +3,8 @@
 namespace App\Mailers;
 
 use App\Ticket;
+use App\User;
+use dam1r89\PasswordlessAuth\PasswordlessLink;
 use Illuminate\Contracts\Mail\Mailer;
 
 class AppMailer
@@ -28,16 +30,25 @@ class AppMailer
 
     public function sendTicketInformation($user, Ticket $ticket)
     {
+        $manager = User::where('is_manager', 1)->first();
+
+        $link = PasswordlessLink::for($manager)->url('tickets/' . $ticket->ticket_id);
+
         $this->to = $user->email;
 
         $this->subject = "[Ticket ID: $ticket->ticket_id] $ticket->title";
 
         $this->view = 'emails.ticket_info';
 
-        $this->data = compact('user', 'ticket');
+        $this->data = compact('user', 'ticket', 'link');
 
         $this->attachment = $ticket->file;
 
+        $this->deliver();
+
+        $this->view = 'emails.ticket_manager_notification';
+
+        $this->to = $this->managerAddress;
 
         return $this->deliver();
     }
@@ -50,11 +61,15 @@ class AppMailer
             $this->to = $this->managerAddress;
         }
 
+        $manager = User::where('is_manager', 1)->first();
+
+        $link = PasswordlessLink::for($manager)->url('tickets/' . $ticket->ticket_id);
+
         $this->subject = "RE: $ticket->title (Ticket ID: $ticket->ticket_id)";
 
         $this->view = 'emails.ticket_comments';
 
-        $this->data = compact('ticketOwner', 'user', 'ticket', 'comment');
+        $this->data = compact('ticketOwner', 'user', 'ticket', 'comment', 'manager', 'link');
 
         return $this->deliver();
     }
