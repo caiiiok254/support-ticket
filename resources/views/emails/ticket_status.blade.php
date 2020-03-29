@@ -6,10 +6,10 @@
 </head>
 <body>
 <p>
-    Hello {{ ucfirst($ticketOwner->name) }},
+    Hello, it's automatic message please do not reply!
 </p>
 <p>
-    Your support ticket with ID #{{ $ticket->ticket_id }} has been marked as closed.
+    Status update: support ticket with ID #{{ $ticket->ticket_id }} has been marked as closed.
 </p>
 </body>
 </html>

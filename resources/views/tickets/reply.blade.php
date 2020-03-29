@@ -10,6 +10,8 @@
                 <input type="hidden" name="ticket_id" value="{{ $ticket->id }}">
 
                 <div class="form-group{{ $errors->has('comment') ? ' has-error' : '' }}">
+
+                    <label for="comment">Comment</label>
                     <textarea rows="10" id="comment" class="form-control" name="comment"></textarea>
 
                     @if ($errors->has('comment'))

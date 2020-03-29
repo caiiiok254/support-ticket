@@ -17,7 +17,7 @@
                             {{ session('status') }}
                         </div>
                     @endif
-@if($diff >= 24)
+                        @if($diff >= 24)
                     <form class="form-horizontal" role="form" method="POST" enctype="multipart/form-data">
                         {!! csrf_field() !!}
 
@@ -108,9 +108,9 @@
                             </div>
                         </div>
                     </form>
-    @else
+                        @else
                     <div class="p-3 mb-2 bg-danger text-white"> You can't create new ticket in less than 24 hours after you created last one</div>
-    @endif
+                        @endif
                 </div>
             </div>
         </div>

@@ -17,21 +17,19 @@
                         <table class="table">
                             <thead>
                             <tr>
-                                <th>Category</th>
-                                <th>Title</th>
-                                <th>Status</th>
-                                <th>Last Updated</th>
+                                <th>@sortablelink('category')</th>
+                                <th>@sortablelink('title')</th>
+                                <th>@sortablelink('status')</th>
+                                <th>@sortablelink('updated_at', 'Last updated')</th>
                                 <th style="text-align:center" colspan="2">Actions</th>
                             </tr>
                             </thead>
                             <tbody>
                             @foreach ($tickets as $ticket)
                                 <tr>
-                                    <td>
-                                        {{ $ticket->category->name }}
+                                    <td> {{ $ticket->category->name }}
                                     </td>
-                                    <td>
-                                        <a href="{{ url('tickets/'. $ticket->ticket_id) }}">
+                                    <td> <a href="{{ url('tickets/'. $ticket->ticket_id) }}">
                                             #{{ $ticket->ticket_id }} - {{ $ticket->title }}
                                         </a>
                                     </td>
@@ -40,6 +38,8 @@
                                             <span class="label label-success">{{ $ticket->status }}</span>
                                         @elseif ($ticket->status === 'Processing')
                                             <span class="label label-warning">{{ $ticket->status }}</span>
+                                        @elseif ($ticket->status === 'Answered')
+                                            <span class="label label-info">{{ $ticket->status }}</span>
                                             @else
                                             <span class="label label-danger">{{ $ticket->status }}</span>
                                         @endif
@@ -60,7 +60,7 @@
                             </tbody>
                         </table>
 
-                        {{ $tickets->render() }}
+                        {{ $tickets->appends(\Request::except('page'))->render() }}
                     @endif
                 </div>
             </div>

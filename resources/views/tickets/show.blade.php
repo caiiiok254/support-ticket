@@ -27,6 +27,8 @@
                                 Status: <span class="label label-success">{{ $ticket->status }}</span>
                             @elseif ($ticket->status === 'Processing')
                                 Status: <span class="label label-warning">{{ $ticket->status }}</span>
+                            @elseif ($ticket->status === 'Answered')
+                                <span class="label label-info">{{ $ticket->status }}</span>
                             @else
                                 Status: <span class="label label-danger">{{ $ticket->status }}</span>
                             @endif
@@ -36,15 +38,18 @@
 
                 </div>
             </div>
-
+            @if ($ticket->file_attached == true)
             <div>File: <a href="/download/{{$ticket->ticket_id}}" target="_blank">Attached file</a></div>
-<hr>
+            <hr>
+            @endif
             <div>
+                @if ($user->is_manager === 1 AND $ticket->status !== "Processing")
                 <form action="{{ url('tickets/' . $ticket->ticket_id . '/processing') }}" method="POST">
                     {!! csrf_field() !!}
                     <button type="submit" class="btn btn-warning">Process this ticket</button>
                 </form>
                 <br>
+                @endif
             <form action="{{ url('close_ticket/' . $ticket->ticket_id) }}" method="POST">
                 {!! csrf_field() !!}
                 <button type="submit" class="btn btn-danger">Close</button>

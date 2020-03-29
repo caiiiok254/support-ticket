@@ -18,10 +18,10 @@
                 <table class="table">
                     <thead>
                     <tr>
-                        <th>Category</th>
-                        <th>Title</th>
-                        <th>Status</th>
-                        <th>Last Updated</th>
+                        <th>@sortablelink('category')</th>
+                        <th>@sortablelink('title')</th>
+                        <th>@sortablelink('status')</th>
+                        <th>@sortablelink('updated_at', 'Last updated')</th>
                         <th style="text-align:center" colspan="2">Actions</th>
                     </tr>
                     </thead>
@@ -37,10 +37,14 @@
                             </a>
                         </td>
                         <td>
-                            @if($ticket->status == "Open")
-                            <span class="label label-success">{{ $ticket->status }}</span>
+                            @if ($ticket->status === 'Open')
+                                <span class="label label-success">{{ $ticket->status }}</span>
+                            @elseif ($ticket->status === 'Processing')
+                                <span class="label label-warning">{{ $ticket->status }}</span>
+                            @elseif ($ticket->status === 'Answered')
+                                <span class="label label-info">{{ $ticket->status }}</span>
                             @else
-                            <span class="label label-danger">{{ $ticket->status }}</span>
+                                <span class="label label-danger">{{ $ticket->status }}</span>
                             @endif
                         </td>
                         <td>

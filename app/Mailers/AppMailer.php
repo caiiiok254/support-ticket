@@ -15,6 +15,7 @@ class AppMailer
     protected $view;
     protected $data = [];
     protected $attachment;
+    protected $managerAddress = 'kiskamiska2000@gmail.com';
 
     /**
      * AppMailer constructor.
@@ -43,7 +44,11 @@ class AppMailer
 
     public function sendTicketComments($ticketOwner, $user, Ticket $ticket, $comment)
     {
-        $this->to = $ticketOwner->email;
+        if ($ticket->status === "Answered") {
+            $this->to = $ticketOwner->email;
+        } else {
+            $this->to = $this->managerAddress;
+        }
 
         $this->subject = "RE: $ticket->title (Ticket ID: $ticket->ticket_id)";
 
@@ -53,14 +58,14 @@ class AppMailer
 
         return $this->deliver();
     }
-
     public function sendTicketStatusNotification($ticketOwner, Ticket $ticket)
     {
         $this->to = $ticketOwner->email;
         $this->subject = "RE: $ticket->title (Ticket ID: $ticket->ticket_id)";
         $this->view = 'emails.ticket_status';
         $this->data = compact('ticketOwner', 'ticket');
-
+        $this->deliver();
+        $this->to = $this->managerAddress;
         return $this->deliver();
     }
 

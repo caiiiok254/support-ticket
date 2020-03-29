@@ -25,7 +25,7 @@ class TicketsController extends Controller
      */
     public function index()
     {
-        $tickets = Ticket::paginate(10);
+        $tickets = Ticket::sortable()->paginate(10);
 
         return view('tickets.index', compact('tickets'));
     }
@@ -69,6 +69,9 @@ class TicketsController extends Controller
             'message' => $request->input('message'),
             'status' => "Open",
         ]);
+        if ($request->file !== null) {
+            $ticket['file_attached'] = true;
+        }
 
         $ticket->save();
 
@@ -76,6 +79,8 @@ class TicketsController extends Controller
 
         $request->file->move(public_path('uploads'), $fileName);
         $ticket['file'] = public_path('uploads') . '\\' . $fileName;
+
+
         $mailer->sendTicketInformation(Auth::user(), $ticket);
 
         return redirect()->back()->with("status", "A ticket with ID: #$ticket->ticket_id has been opened.");
@@ -83,7 +88,7 @@ class TicketsController extends Controller
 
     public function userTickets()
     {
-        $tickets = Ticket::where('user_id', Auth::user()->id)->paginate(10);
+        $tickets = Ticket::where('user_id', Auth::user()->id)->sortable()->paginate(10);
 
         return view('tickets.user_tickets', compact('tickets'));
     }
@@ -97,8 +102,9 @@ class TicketsController extends Controller
     public function show($ticket_id)
     {
         $ticket = Ticket::where('ticket_id', $ticket_id)->firstOrFail();
+        $user = Auth::user();
 
-        return view('tickets.show', compact('ticket'));
+        return view('tickets.show', compact('ticket', 'user'));
     }
 
     public function processing($ticket_id)
@@ -111,6 +117,7 @@ class TicketsController extends Controller
 
         return redirect()->back()->with("status", "The ticket marked as Processing.");
     }
+
 
     public function close($ticket_id, AppMailer $mailer)
     {
